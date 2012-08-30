@@ -4,20 +4,16 @@ var sinon = require('sinon');
 var entity = require('../lib/entity');
 
 describe('Entity', function() {
-    var schema, model, Model;
+    var model, Test;
 
     beforeEach(function() {
-        schema = new mongoose.Schema();
+        var schema = new mongoose.Schema();
         schema.plugin(entity, {
             path: '_acl'
         });
 
-        Model = mongoose.model('test', schema);
-        model = new Model();
-    });
-
-    it('adds acl field to schema', function() {
-        assert.ok(schema.paths['_acl']);
+        Test = mongoose.model('test', schema);
+        model = new Test();
     });
 
     describe('when setting permissions', function() {
@@ -47,8 +43,8 @@ describe('Entity', function() {
         });
 
         it('creates $or query for all access keys and op', function() {
-            var find = sinon.spy(Model, 'find');
-            var cursor = Model.withAccess(subject, 'baz');
+            var find = sinon.spy(Test, 'find');
+            var cursor = Test.withAccess(subject, 'baz');
             
             assert.ok(find.calledOnce);
 
