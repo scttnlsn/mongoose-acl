@@ -1,6 +1,6 @@
 {
     "name":         "mongoose-acl",
-    "version":      "0.0.1",
+    "version":      "0.0.0",
     "description":  "Mongoose ACL",
     "homepage":     "http://github.com/scttnlsn/mongoose-acl",
     "author":       "Scott Nelson <scott@scttnlsn.com>",
