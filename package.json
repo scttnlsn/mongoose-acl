@@ -1,0 +1,26 @@
+{
+    "name":         "mongoose-acl",
+    "version":      "0.0.1",
+    "description":  "Mongoose ACL",
+    "homepage":     "http://github.com/scttnlsn/mongoose-acl",
+    "author":       "Scott Nelson <scott@scttnlsn.com>",
+    "main":         "./lib/index",
+
+    "scripts": {
+        "test": "./node_modules/.bin/mocha"
+    },
+    
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/scttnlsn/mongoose-acl.git"
+    },
+    
+    "dependencies": {
+    },
+    
+    "devDependencies": {
+        "mocha": ">= 1.4.1",
+        "mongoose": ">= 3.1.0",
+        "sinon": ">= 1.4.2"
+    }
+}
