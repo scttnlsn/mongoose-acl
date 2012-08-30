@@ -1,14 +1,14 @@
 var assert = require('assert');
 var mongoose = require('mongoose');
 var sinon = require('sinon');
-var entity = require('../lib/entity');
+var object = require('../lib/object');
 
 describe('Entity', function() {
     var model, Test;
 
     beforeEach(function() {
         var schema = new mongoose.Schema();
-        schema.plugin(entity, {
+        schema.plugin(object, {
             path: '_acl'
         });
 
