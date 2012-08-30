@@ -87,6 +87,11 @@ UserSchema.plugin(acl.subject, {
     public: '*'
 });
 ```
+
+Install
+---
+
+    npm install mongoose-acl
     
 Tests
 ---
