@@ -14,7 +14,7 @@ describe('Subject', function() {
         schema.plugin(subject, {
             public: '*',
 
-            allow: function() {
+            additionalKeys: function() {
                 return this.roles.map(function(role) {
                     return 'role:' + role;
                 });
