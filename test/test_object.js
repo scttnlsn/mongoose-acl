@@ -42,7 +42,7 @@ describe('Entity', function() {
             };
         });
 
-        it('creates $or query for all access keys and op', function() {
+        it('creates $or query for all access keys and perms', function() {
             var find = sinon.spy(Test, 'find');
             var cursor = Test.withAccess(subject, 'baz');
             
