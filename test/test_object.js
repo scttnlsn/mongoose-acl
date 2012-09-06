@@ -44,7 +44,7 @@ describe('Entity', function() {
 
         it('creates $or query for all access keys and perms', function() {
             var find = sinon.spy(Test, 'find');
-            var cursor = Test.withAccess(subject, 'baz');
+            var cursor = Test.withAccess(subject, { baz: true });
             
             assert.ok(find.calledOnce);
 

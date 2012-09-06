@@ -38,7 +38,7 @@ user.getAccess(widget); // => { read: true: write: true, delete: true });
 We can query for all objects to which a particular subject has access:
 
 ```javascript
-Widget.withAccess(user, 'read').exec(function(err, widgets) {
+Widget.withAccess(user, { read: true }).exec(function(err, widgets) {
     ...
 });
 ```
