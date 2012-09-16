@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var sinon = require('sinon');
 var object = require('../lib/object');
 
-describe('Entity', function() {
+describe('Object', function() {
     var model, Test;
 
     beforeEach(function() {
