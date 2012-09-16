@@ -35,31 +35,21 @@ describe('Subject', function() {
 
         beforeEach(function() {
             var access = {
-                '*': {
-                    a: true,
-                    b: true,
-                    c: false
-                },
-                'role:foo': {
-                    a: true,
-                    b: false,
-                    c: false
-                },
-                'role:bar': {
-                    d: false
-                }
+                '*': ['a', 'b'],
+                'role:foo': ['a'],
+                'role:bar': ['c']
             };
 
             entity = {
                 getAccess: function(key) {
-                    return access[key] || {};
+                    return access[key] || [];
                 }
             };
         });
 
-        it('logically ors permissions', function() {
+        it('combines all permissions', function() {
             var perms = model.getAccess(entity);
-            assert.deepEqual(perms, { a: true, b: true, c: false, d: false });
+            assert.deepEqual(perms, ['a', 'b', 'c']);
         });
     });
 
@@ -74,14 +64,14 @@ describe('Subject', function() {
         });
 
         it('sets permissions for subject key', function() {
-            model.setAccess(entity, { a: true });
+            model.setAccess(entity, ['a']);
             assert.ok(setAccess.calledOnce);
 
             var key = setAccess.getCall(0).args[0];
             var perms = setAccess.getCall(0).args[1];
 
             assert.equal(key, 'subject:' + model._id);
-            assert.deepEqual(perms, { a: true });
+            assert.deepEqual(perms, ['a']);
         });
     });
 });

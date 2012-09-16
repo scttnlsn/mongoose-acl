@@ -18,12 +18,12 @@ describe('Entity', function() {
 
     describe('when setting permissions', function() {
         beforeEach(function() {
-            model.setAccess('foo', { bar: true });
+            model.setAccess('foo', ['bar']);
         });
 
         it('sets permissions in acl', function() {
-            assert.equal(model._acl.foo.bar, true);
-            assert.deepEqual(model.getAccess('foo'), { bar: true });
+            assert.deepEqual(model._acl.foo, ['bar']);
+            assert.deepEqual(model.getAccess('foo'), ['bar']);
         });
 
         it('marks acl as modified', function() {
@@ -44,7 +44,7 @@ describe('Entity', function() {
 
         it('creates $or query for all access keys and perms', function() {
             var find = sinon.spy(Test, 'find');
-            var cursor = Test.withAccess(subject, { baz: true });
+            var cursor = Test.withAccess(subject, ['baz', 'qux']);
             
             assert.ok(find.calledOnce);
 
@@ -52,8 +52,8 @@ describe('Entity', function() {
 
             assert.deepEqual(query, {
                 $or: [
-                    { '_acl.foo.baz': true },
-                    { '_acl.bar.baz': true }
+                    { '_acl.foo': { $all: ['baz', 'qux'] }},
+                    { '_acl.bar': { $all: ['baz', 'qux'] }}
                 ]
             });
         });

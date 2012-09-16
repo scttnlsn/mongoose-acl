@@ -22,8 +22,8 @@ The plugin adds accessor methods to the object for getting and setting permissio
 ```javascript
 var widget = new Widget({ … });
 
-widget.setAccess('foo', { a: true, b: true });
-widget.getAccess('foo'); // => { a: true, b: true }
+widget.setAccess('foo', ['a', 'b']);
+widget.getAccess('foo'); // => ['a', 'b']
 ```
     
 There are also convenience methods added to the subject for getting and setting the permissions for a given object:
@@ -31,14 +31,14 @@ There are also convenience methods added to the subject for getting and setting 
 ```javascript
 var user = …;
 
-user.setAccess(widget, { read: true, write: true, delete: true });
-user.getAccess(widget); // => { read: true: write: true, delete: true });
+user.setAccess(widget, ['read', 'write', 'delete']);
+user.getAccess(widget); // => ['read', 'write', 'delete']
 ```
     
 We can query for all objects to which a particular subject has access:
 
 ```javascript
-Widget.withAccess(user, { read: true }).exec(function(err, widgets) {
+Widget.withAccess(user, ['read']).exec(function(err, widgets) {
     ...
 });
 ```
