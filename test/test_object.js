@@ -58,4 +58,44 @@ describe('Entity', function() {
             });
         });
     });
+
+    describe('when getting keys with given permissions', function() {
+        beforeEach(function() {
+            model.setAccess('foo', ['a', 'b']);
+            model.setAccess('bar', ['a']);
+            model.setAccess('baz', ['b', 'c']);
+        });
+
+        it('returns keys that have all given permissions', function() {
+            var keys = model.keysWithAccess(['a']);
+
+            assert.equal(keys.length, 2);
+            assert.ok(keys.indexOf('foo') !== -1);
+            assert.ok(keys.indexOf('bar') !== -1);
+
+            keys = model.keysWithAccess(['a', 'b']);
+
+            assert.equal(keys.length, 1);
+            assert.ok(keys.indexOf('foo') !== -1);
+
+            keys = model.keysWithAccess(['b']);
+
+            assert.equal(keys.length, 2);
+            assert.ok(keys.indexOf('foo') !== -1);
+            assert.ok(keys.indexOf('baz') !== -1);
+
+            keys = model.keysWithAccess(['c']);
+
+            assert.equal(keys.length, 1);
+            assert.ok(keys.indexOf('baz') !== -1);
+
+            keys = model.keysWithAccess(['a', 'c']);
+
+            assert.equal(keys.length, 0);
+
+            keys = model.keysWithAccess(['d']);
+
+            assert.equal(keys.length, 0);
+        });
+    });
 });

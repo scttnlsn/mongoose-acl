@@ -25,6 +25,10 @@ var widget = new Widget({ … });
 widget.setAccess('foo', ['a', 'b']);
 widget.getAccess('foo'); // => ['a', 'b']
 ```
+
+Or getting all keys with given permissions:
+
+widget.keysWithAccess(['a']); // => ['foo']
     
 There are also convenience methods added to the subject for getting and setting the permissions for a given object:
 
