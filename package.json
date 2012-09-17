@@ -4,6 +4,7 @@
     "description":  "Mongoose ACL",
     "homepage":     "http://github.com/scttnlsn/mongoose-acl",
     "author":       "Scott Nelson <scott@scttnlsn.com>",
+    "contributors": ["Joshua Gross <josh@spandex.io>"],
     "main":         "./lib/index",
 
     "scripts": {
