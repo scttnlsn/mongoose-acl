@@ -6,7 +6,7 @@ var subject = require('../lib/subject');
 describe('Subject', function() {
     var model, Test;
 
-    beforeEach(function() {
+    before(function() {
         var schema = new mongoose.Schema({
             roles: [String]
         });
@@ -22,6 +22,9 @@ describe('Subject', function() {
         });
 
         Test = mongoose.model('Test', schema);
+    });
+
+    beforeEach(function() {
         model = new Test({ roles: ['foo', 'bar'] });
     });
 

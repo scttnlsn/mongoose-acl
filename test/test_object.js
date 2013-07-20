@@ -6,13 +6,16 @@ var object = require('../lib/object');
 describe('Object', function() {
     var model, Test;
 
-    beforeEach(function() {
+    before(function() {
         var schema = new mongoose.Schema();
         schema.plugin(object, {
             path: '_acl'
         });
 
         Test = mongoose.model('test', schema);
+    });
+
+    beforeEach(function() {
         model = new Test();
     });
 
