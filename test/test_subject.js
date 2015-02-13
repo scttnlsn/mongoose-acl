@@ -21,11 +21,13 @@ describe('Subject', function() {
             }
         });
 
-        Test = mongoose.model('Test', schema);
+        Test = mongoose.model('Subject', schema);
     });
 
     beforeEach(function() {
-        model = new Test({ roles: ['foo', 'bar'] });
+        model = new Test({
+            roles: ['foo', 'bar']
+        });
     });
 
     it('returns access keys', function() {
