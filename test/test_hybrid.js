@@ -30,11 +30,6 @@ describe('Hybrid', function() {
         });
     });
 
-    it('returns access keys', function() {
-        var keys = model.getAccessKeys();
-        assert.deepEqual(keys, ['subject:' + model._id, '*', 'role:foo', 'role:bar']);
-    });
-
     describe('when getting access for entity', function() {
         var entity;
 
@@ -77,94 +72,6 @@ describe('Hybrid', function() {
 
             assert.equal(key, 'subject:' + model._id);
             assert.deepEqual(perms, ['a']);
-        });
-    });
-
-    describe('when setting permissions', function() {
-        beforeEach(function() {
-            model.setAccess('foo', ['bar']);
-        });
-
-        it('sets permissions in acl', function() {
-            assert.deepEqual(model._acl.foo, ['bar']);
-            assert.deepEqual(model.getAccess('foo'), ['bar']);
-        });
-
-        it('marks acl as modified', function() {
-            assert.ok(model.isModified('_acl'));
-        });
-    });
-
-    describe('when getting permission cursor', function() {
-        var cursor, subject;
-
-        beforeEach(function() {
-            subject = {
-                getAccessKeys: function() {
-                    return ['foo', 'bar'];
-                }
-            };
-        });
-
-        it('creates $or query for all access keys and perms', function() {
-            var find = sinon.spy(Test, 'find');
-            var cursor = Test.withAccess(subject, ['baz', 'qux']);
-
-            assert.ok(find.calledOnce);
-
-            var query = find.getCall(0).args[0];
-
-            assert.deepEqual(query, {
-                $or: [{
-                    '_acl.foo': {
-                        $all: ['baz', 'qux']
-                    }
-                }, {
-                    '_acl.bar': {
-                        $all: ['baz', 'qux']
-                    }
-                }]
-            });
-        });
-    });
-
-    describe('when getting keys with given permissions', function() {
-        beforeEach(function() {
-            model.setAccess('foo', ['a', 'b']);
-            model.setAccess('bar', ['a']);
-            model.setAccess('baz', ['b', 'c']);
-        });
-
-        it('returns keys that have all given permissions', function() {
-            var keys = model.keysWithAccess(['a']);
-
-            assert.equal(keys.length, 2);
-            assert.ok(keys.indexOf('foo') !== -1);
-            assert.ok(keys.indexOf('bar') !== -1);
-
-            keys = model.keysWithAccess(['a', 'b']);
-
-            assert.equal(keys.length, 1);
-            assert.ok(keys.indexOf('foo') !== -1);
-
-            keys = model.keysWithAccess(['b']);
-
-            assert.equal(keys.length, 2);
-            assert.ok(keys.indexOf('foo') !== -1);
-            assert.ok(keys.indexOf('baz') !== -1);
-
-            keys = model.keysWithAccess(['c']);
-
-            assert.equal(keys.length, 1);
-            assert.ok(keys.indexOf('baz') !== -1);
-
-            keys = model.keysWithAccess(['a', 'c']);
-
-            assert.equal(keys.length, 0);
-
-            keys = model.keysWithAccess(['d']);
-
-            assert.equal(keys.length, 0);
         });
     });
 });

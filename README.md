@@ -96,11 +96,28 @@ UserSchema.plugin(acl.subject, {
 
 ### Hybrid
 
-Combines Subject and Object, so that a subject can introspectively see if has permissions on itself. `getAccess` and `setAccess` method on the subject are renamed as `getSubjectAccess` and `setSubjectAccess`, respectively. All other option/method names remain the same.
+Combines `subject` and `object`, so that a subject can determine if it has permissions on itself or another "subject". `getAccess` and `setAccess` methods on the subject are renamed as `getSubjectAccess` and `setSubjectAccess`, respectively. All other options/methods remain the same. Explicitly:
 
-```javascript
+```
 subject.getAccess --> hybrid.getSubjectAccess
 subject.setAccess --> hybrid.setSubjectAccess
+```
+
+`hybrid` example with all options:
+
+```javascript
+UserSchema.plugin(acl.hybrid, {
+    path: '_acl',
+    public: '*',
+    key: function() {
+        return 'user:' + this._id;
+    },
+    additionalKeys: function() {
+        return this.roles.map(function(role) {
+            return 'role:' + role;
+        });
+    }
+});
 ```
 
 Install

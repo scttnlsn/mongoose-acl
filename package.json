@@ -1,7 +1,7 @@
 {
   "name": "mongoose-acl",
   "description": "Mongoose ACL",
-  "version": "1.0.0",
+  "version": "0.2.1",
   "author": "Scott Nelson <scott@scttnlsn.com>",
   "contributors": [
     "Joshua Gross <josh@spandex.io>",
