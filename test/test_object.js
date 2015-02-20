@@ -12,7 +12,7 @@ describe('Object', function() {
             path: '_acl'
         });
 
-        Test = mongoose.model('test', schema);
+        Test = mongoose.model('Object', schema);
     });
 
     beforeEach(function() {
@@ -48,16 +48,21 @@ describe('Object', function() {
         it('creates $or query for all access keys and perms', function() {
             var find = sinon.spy(Test, 'find');
             var cursor = Test.withAccess(subject, ['baz', 'qux']);
-            
+
             assert.ok(find.calledOnce);
 
             var query = find.getCall(0).args[0];
 
             assert.deepEqual(query, {
-                $or: [
-                    { '_acl.foo': { $all: ['baz', 'qux'] }},
-                    { '_acl.bar': { $all: ['baz', 'qux'] }}
-                ]
+                $or: [{
+                    '_acl.foo': {
+                        $all: ['baz', 'qux']
+                    }
+                }, {
+                    '_acl.bar': {
+                        $all: ['baz', 'qux']
+                    }
+                }]
             });
         });
     });

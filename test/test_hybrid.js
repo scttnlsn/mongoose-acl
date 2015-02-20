@@ -1,9 +1,9 @@
 var assert = require('assert');
 var mongoose = require('mongoose');
 var sinon = require('sinon');
-var subject = require('../lib/subject');
+var hybrid = require('../lib/hybrid');
 
-describe('Subject', function() {
+describe('Hybrid', function() {
     var model, Test;
 
     before(function() {
@@ -11,7 +11,7 @@ describe('Subject', function() {
             roles: [String]
         });
 
-        schema.plugin(subject, {
+        schema.plugin(hybrid, {
             public: '*',
 
             additionalKeys: function() {
@@ -21,18 +21,13 @@ describe('Subject', function() {
             }
         });
 
-        Test = mongoose.model('Subject', schema);
+        Test = mongoose.model('Hybrid', schema);
     });
 
     beforeEach(function() {
         model = new Test({
             roles: ['foo', 'bar']
         });
-    });
-
-    it('returns access keys', function() {
-        var keys = model.getAccessKeys();
-        assert.deepEqual(keys, ['subject:' + model._id, '*', 'role:foo', 'role:bar']);
     });
 
     describe('when getting access for entity', function() {
@@ -53,7 +48,7 @@ describe('Subject', function() {
         });
 
         it('combines all permissions', function() {
-            var perms = model.getAccess(entity);
+            var perms = model.getSubjectAccess(entity);
             assert.deepEqual(perms, ['a', 'b', 'c']);
         });
     });
@@ -69,7 +64,7 @@ describe('Subject', function() {
         });
 
         it('sets permissions for subject key', function() {
-            model.setAccess(entity, ['a']);
+            model.setSubjectAccess(entity, ['a']);
             assert.ok(setAccess.calledOnce);
 
             var key = setAccess.getCall(0).args[0];

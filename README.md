@@ -14,7 +14,7 @@ WidgetSchema.plugin(acl.object);
 var UserSchema = new mongoose.Schema({ … });
 UserSchema.plugin(acl.subject);
 ```
-    
+
 Methods
 ---
 The plugin adds accessor methods to the object for getting and setting permissions of a particular key:
@@ -31,7 +31,7 @@ Or getting all keys with given permissions:
 ```javascript
 widget.keysWithAccess(['a']); // => ['foo']
 ```
-    
+
 There are also convenience methods added to the subject for getting and setting the permissions for a given object:
 
 ```javascript
@@ -40,7 +40,7 @@ var user = …;
 user.setAccess(widget, ['read', 'write', 'delete']);
 user.getAccess(widget); // => ['read', 'write', 'delete']
 ```
-    
+
 We can query for all objects to which a particular subject has access:
 
 ```javascript
@@ -48,7 +48,7 @@ Widget.withAccess(user, ['read']).exec(function(err, widgets) {
     ...
 });
 ```
-    
+
 Options
 ---
 
@@ -61,7 +61,7 @@ WidgetSchema.plugin(acl.object, {
     path: '_acl'
 });
 ```
-    
+
 ### Subject
 
 Each subject is referred to in an ACL by a unique key (by default it is of the form `subject:<subject _id>`).  This can be customized by specifying a `key` option:
@@ -73,7 +73,7 @@ UserSchema.plugin(acl.subject, {
     }
 });
 ```
-    
+
 We can also specify additional ACL keys to which a subject has access.  For example, suppose a user optionally belongs to a number of roles:
 
 ```javascript
@@ -85,7 +85,7 @@ UserSchema.plugin(acl.subject, {
     }
 });
 ```
-    
+
 There is one special key referred to as the public key.  If set, the associated permissions will apply to all subjects:
 
 ```javascript
@@ -94,12 +94,42 @@ UserSchema.plugin(acl.subject, {
 });
 ```
 
+### Hybrid
+
+Combines `subject` and `object`, so that a subject can determine if it has permissions on itself or another "subject". `getAccess` and `setAccess` methods on the subject are renamed as `getSubjectAccess` and `setSubjectAccess`, respectively. All other options/methods remain the same. Explicitly:
+
+```
+subject.getAccess --> hybrid.getSubjectAccess
+subject.setAccess --> hybrid.setSubjectAccess
+```
+
+`hybrid` example with all options:
+
+```javascript
+UserSchema.plugin(acl.hybrid, {
+    path: '_acl',
+    public: '*',
+    key: function() {
+        return 'user:' + this._id;
+    },
+    additionalKeys: function() {
+        return this.roles.map(function(role) {
+            return 'role:' + role;
+        });
+    }
+});
+```
+
 Install
 ---
 
-    npm install mongoose-acl
-    
+```sh
+npm install mongoose-acl
+```
+
 Tests
 ---
 
-    npm test
+```sh
+npm test
+```
