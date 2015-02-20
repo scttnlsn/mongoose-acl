@@ -8,10 +8,10 @@ Usage
 var mongoose = require('mongoose');
 var acl = require('mongoose-acl');
 
-var WidgetSchema = new mongoose.Schema({ … });
+var WidgetSchema = new mongoose.Schema({ ... });
 WidgetSchema.plugin(acl.object);
 
-var UserSchema = new mongoose.Schema({ … });
+var UserSchema = new mongoose.Schema({ ... });
 UserSchema.plugin(acl.subject);
 ```
 
@@ -20,7 +20,7 @@ Methods
 The plugin adds accessor methods to the object for getting and setting permissions of a particular key:
 
 ```javascript
-var widget = new Widget({ … });
+var widget = new Widget({ ... });
 
 widget.setAccess('foo', ['a', 'b']);
 widget.getAccess('foo'); // => ['a', 'b']
@@ -35,7 +35,7 @@ widget.keysWithAccess(['a']); // => ['foo']
 There are also convenience methods added to the subject for getting and setting the permissions for a given object:
 
 ```javascript
-var user = …;
+var user = ...;
 
 user.setAccess(widget, ['read', 'write', 'delete']);
 user.getAccess(widget); // => ['read', 'write', 'delete']
@@ -96,28 +96,20 @@ UserSchema.plugin(acl.subject, {
 
 ### Hybrid
 
-Combines `subject` and `object`, so that a subject can determine if it has permissions on itself or another "subject". `getAccess` and `setAccess` methods on the subject are renamed as `getSubjectAccess` and `setSubjectAccess`, respectively. All other options/methods remain the same. Explicitly:
+Combines `subject` and `object` so that a subject can determine if it has permissions on itself or another "subject". `getAccess` and `setAccess` methods on the subject are renamed as `getSubjectAccess` and `setSubjectAccess`, respectively. All other options/methods remain the same. Explicitly:
 
 ```
 subject.getAccess --> hybrid.getSubjectAccess
 subject.setAccess --> hybrid.setSubjectAccess
 ```
 
-`hybrid` example with all options:
-
 ```javascript
-UserSchema.plugin(acl.hybrid, {
-    path: '_acl',
-    public: '*',
-    key: function() {
-        return 'user:' + this._id;
-    },
-    additionalKeys: function() {
-        return this.roles.map(function(role) {
-            return 'role:' + role;
-        });
-    }
-});
+UserSchema.plugin(acl.hybrid);
+
+var user = ...;
+
+user.setAccess('*', ['read']);
+user.setSubjectAccess(user, ['write', 'delete']);
 ```
 
 Install
