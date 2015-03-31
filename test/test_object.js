@@ -106,4 +106,20 @@ describe('Object', function() {
             assert.equal(keys.length, 0);
         });
     });
+
+    describe('when revoking permissions', function() {
+        beforeEach(function() {
+            model.setAccess('foo', ['a', 'b']);
+            model.setAccess('bar', ['a']);
+            model.revokeAccess('foo');
+        });
+
+        it('revokes permissions in acl', function() {
+            assert.ok(!model._acl.foo);
+        });
+
+        it('marks acl as modified', function() {
+            assert.ok(model.isModified('_acl'));
+        });
+    });
 });
